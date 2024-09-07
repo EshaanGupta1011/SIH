@@ -45,7 +45,7 @@ function App() {
     } catch (err) {
       console.error("Error fetching prediction:", err);
       setError(`Error fetching ${type} prediction. ${err.message}`);
-      return { predicted_load: [], actual_load: [] }; // Return empty data structure to avoid undefined access
+      return { predicted_load: [], actual_load: [] };
     }
   };
 
@@ -101,8 +101,8 @@ function App() {
         {
           label: "Actual Load",
           data: actualLoad,
-          borderColor: "rgba(54, 162, 235, 1)",
-          backgroundColor: "rgba(54, 162, 235, 0.2)",
+          borderColor: "rgba(0, 25, 87, 1)",
+          backgroundColor: "rgba(0, 25, 87, 0.2)",
           fill: true,
         },
       ],
@@ -128,16 +128,30 @@ function App() {
     scales: {
       x: {
         display: true,
+        grid: {
+          color: "#d8d8d8",
+        },
         title: {
           display: true,
           text: "Time Step",
+          color: "#0a0a0a",
+        },
+        ticks: {
+          color: "#0a0a0a",
         },
       },
       y: {
         display: true,
+        grid: {
+          color: "#d8d8d8",
+        },
         title: {
           display: true,
           text: "Load Value",
+          color: "#0a0a0a",
+        },
+        ticks: {
+          color: "#0a0a0a",
         },
       },
     },
@@ -147,20 +161,29 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Load Prediction</h1>
-      <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
-        placeholder="YYYY-MM-DD"
-      />
-      <button onClick={handlePredict}>Predict Future Load</button>
+      <h1 className="Heading">Power Demand Prediction Model</h1>
+      <div className="navbar">
+        <p>Team Coherence</p>
+        <p>SIH Problem Statement ID: 1624</p>
+      </div>
+      <div className="prediction-section">
+        <input
+          type="date"
+          value={date}
+          onChange={(e) => setDate(e.target.value)}
+          placeholder="YYYY-MM-DD"
+          className="input-field"
+        />
+        <button className="predict-btn" onClick={handlePredict}>
+          Predict Future Load
+        </button>
+      </div>
       {loading && <p>Loading predictions...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
-        <h2>Load Prediction Results</h2>
+        <h2 className="sub-heading">Load Prediction Results: </h2>
         <div style={{ width: "100%", height: "300px" }}>
-          <h3>Daily Prediction</h3>
+          <h3 className="daily-heading">Daily Prediction</h3>
           <Line
             data={createChartData(
               predictions.day.predictedLoad,
@@ -168,9 +191,10 @@ function App() {
             )}
             options={options}
           />
+          <p className="sidenote">Each step is a block denoting 15 mins</p>
         </div>
         <div style={{ width: "100%", height: "300px" }}>
-          <h3>Weekly Prediction</h3>
+          <h3 className="week-heading">Weekly Prediction</h3>
           <Line
             data={createChartData(
               predictions.week.predictedLoad,
@@ -178,9 +202,10 @@ function App() {
             )}
             options={options}
           />
+          <p className="sidenote">Each step is a block denoting 15 mins</p>
         </div>
         <div style={{ width: "100%", height: "300px" }}>
-          <h3>Monthly Prediction</h3>
+          <h3 className="month-heading">Monthly Prediction</h3>
           <Line
             data={createChartData(
               predictions.month.predictedLoad,
@@ -188,6 +213,7 @@ function App() {
             )}
             options={options}
           />
+          <p className="sidenote">Each step is a block denoting 15 mins</p>
         </div>
       </div>
     </div>

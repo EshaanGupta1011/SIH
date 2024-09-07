@@ -32,7 +32,7 @@ def create_sequences(data, time_steps=1):
     return np.array(X), np.array(y)
 
 def predict_load(custom_date, period_hours):
-    # Attempt to load and preprocess the data
+
     try:
         df = pd.read_csv("./processed.csv")
         df['Datetime'] = pd.to_datetime(df['Datetime'], format="%Y-%m-%d %H:%M:%S")
@@ -44,7 +44,7 @@ def predict_load(custom_date, period_hours):
         logging.error("Error reading processed.csv", exc_info=e)
         raise HTTPException(status_code=500, detail="Error reading data file.")
 
-    # Calculate date ranges for testing and training
+    
     test_start = custom_date - pd.Timedelta(hours=2)
     test_end = custom_date + pd.Timedelta(hours=period_hours) - pd.Timedelta(minutes=15)
     test = df.loc[test_start:test_end]
@@ -56,27 +56,27 @@ def predict_load(custom_date, period_hours):
     train_end = custom_date - pd.Timedelta(minutes=15)
     train = df.loc[:train_end]
 
-    # Check shapes of training and test datasets
+    
     logging.debug(f"Training data shape: {train.shape}, Test data shape: {test.shape}")
 
-    # Prepare data for model testing
+    
     train_data = train['Load'].dropna().values.reshape(-1, 1)
     test_data = test['Load'].dropna().values.reshape(-1, 1)
 
-    # Normalize the data
+    
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaler.fit(train_data)
     test_scaled = scaler.transform(test_data)
 
-    # Create sequences
+    
     time_steps = 8
     X_test, y_test = create_sequences(test_scaled, time_steps)
     X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], 1)
     logging.debug(f"X_test shape: {X_test.shape}, y_test shape: {y_test.shape}")
 
-    # Load and predict using the model
+    
     try:
-        model = load_model('./lstm_model_1.keras')
+        model = load_model('./lstm_model_2_year.keras')
         predicted = model.predict(X_test)
         predicted_load = scaler.inverse_transform(predicted.reshape(-1, 1))
         actual_load = scaler.inverse_transform(y_test.reshape(-1, 1))
@@ -84,7 +84,7 @@ def predict_load(custom_date, period_hours):
         logging.error("Error in predicting load.", exc_info=e)
         raise HTTPException(status_code=500, detail="Error during model prediction.")
     
-    # Log prediction results
+
     logging.debug(f"Predicted load sample: {predicted_load.flatten()[:5]}")
     logging.debug(f"Actual load sample: {actual_load.flatten()[:5]}")
 
@@ -101,7 +101,7 @@ async def predict_day(date: str = Query(..., description="The starting date for 
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid date format. Use YYYY-MM-DD.")
     except HTTPException as e:
-        raise e  # Re-raise existing HTTP exceptions
+        raise e 
 
 @app.get("/predict/week")
 async def predict_week(date: str = Query(..., description="The starting date for prediction in YYYY-MM-DD format")):

@@ -1,0 +1,94 @@
+.App {
+  font-family: Poppins;
+  margin-bottom: 200px;
+}
+
+.Heading {
+  text-align: center;
+  font-size: 50px;
+  background: linear-gradient(90deg, #001957, #78a6e7, #001957);
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-animation 3s linear infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 100%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 50% 100%;
+  }
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0px 30px;
+}
+
+.navbar p {
+  font-weight: 600;
+  font-size: 24px;
+  color: #001957;
+}
+
+.prediction-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-field {
+  border: none;
+  background-color: rgb(218, 218, 218);
+  padding: 10px 20px;
+  border-radius: 8px 0px 0px 8px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.predict-btn {
+  border: none;
+  background-color: #0d2887;
+  color: #fafafa;
+  padding: 11px 20px;
+  border-radius: 0px 8px 8px 0px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.predict-btn:hover {
+  background-color: #011769;
+}
+
+.sub-heading {
+  padding-top: 50px;
+  font-size: 42px;
+  margin-left: 30px;
+}
+
+.week-heading,
+.month-heading {
+  margin-top: 200px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.daily-heading {
+  margin-top: 100px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.sidenote {
+  font-weight: 500;
+  margin-left: 24px;
+}
